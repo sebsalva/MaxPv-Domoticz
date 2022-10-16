@@ -16,7 +16,7 @@ Le script peut ensuite être compléter de façon identique pour afficher la pro
 ![Capteur virtuel Energie](https://raw.githubusercontent.com/sebsalva/MaxPv-Domoticz/main/fig/energie.png)
 
 * 2 Interrupteurs virtuels
-* 2 bouttons selecteurs : important il faut ajouter les levels "stop", "force" et "auto" en miniscule comme sir la copie d'écran
+* 2 bouttons selecteurs : important il faut ajouter les levels "stop", "force" et "auto" en miniscule comme sur la copie d'écran
 
 ![Capteur virtuel Energie](https://raw.githubusercontent.com/sebsalva/MaxPv-Domoticz/main/fig/selecteur.png)
 
