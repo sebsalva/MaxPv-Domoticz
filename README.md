@@ -1,7 +1,7 @@
 # MaxPv-Domoticz
 A Lua script for Domoticz servers allowing to control MaxPv
 
-### Script Lua qui permet :
+### Script Lua pour Domoticz qui permet de contrôler le Routeur Solaire MAxPv (https://github.com/Jetblack31/MaxPV). Précisemment, ce script permet :
 * l'affichage de l'énergie consommée (Wh)
 * l'affichage de l'énergie routée
 * l'affichage de l'état du relais SSR
