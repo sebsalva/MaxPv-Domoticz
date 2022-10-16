@@ -144,8 +144,8 @@ config=assert(io.popen(Cmd))
             ret = config:read('*all')
             config:close();
 tab=mysplit(ret,',')
-update('Routeur_Energie', 12153, tab[3], tab[10])
-update('Routeur_EnergieRoute', 12152, tab[5], tab[9])
+update(Energie, idxCptEnergie, tab[3], tab[10])
+update(EnergieRoute, idxCptEnergieRoute, tab[5], tab[9])
 ChangeState(tab[20])
 end
 end
