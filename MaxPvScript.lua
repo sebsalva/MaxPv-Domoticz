@@ -55,7 +55,7 @@ local EtatRelais='Etat_Relais'
 --------------------------------
 local index=-1
 --------------------------------
-fonction d'affichage de Logs
+--fonction d'affichage de Logs
 function see_logs (s)
     if (debugging) then 
         print ('PvRouter LOG '..s);
