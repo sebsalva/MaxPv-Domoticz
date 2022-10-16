@@ -9,7 +9,7 @@ A Lua script for Domoticz servers allowing to control MaxPv
 * de modifier le fonctionnement du routeur pour le SSR
 * de modifier le fonctionnement du routeur pour le relais
 
-Le script peut ensuite être compléter de façon identique pour afficher la production, les erreurs, le voltage, etc.
+Le script peut ensuite être complété de façon identique pour afficher la production, les erreurs, le voltage, etc.
 
 ### Commencez par créer :
 * 2 capteurs virtuels Energie et notez leurs noms et Idx
