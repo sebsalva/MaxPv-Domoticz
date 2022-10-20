@@ -1,4 +1,4 @@
--- Doc API MaxPV https://github.com/Jetblack31/MaxPV
+-- Doc API MaxPV https://github.com/Jetblack31/MaxPV version 3.1
 --API /api/get?data=XX lecture data de fonctionnement
 --XX
 --01 : tension secteur
@@ -39,18 +39,22 @@
 --24 : référence du jour pour l’index journalier d’énergie importée (kWh)
 --25 : référence du jour pour l’index journalier d’énergie exportée (kWh)
 --26 : référence du jour pour l’index journalier d’énergie produite (kWh)
--- variable à éditer ------
 --------------------------------
+-- variable à éditer ------
 local debugging = false --true pour voir les logs dans la console log Dz ou false pour ne pas les voir
-local adrRouteur = '192.168.1.17'
-local Energie = 'Routeur_Energie'
-local idxCptEnergie = 12153
-local EnergieRoute = 'Routeur_EnergieRoute'
-local idxCptEnergieRoute = 12152
-local modeSSR = 'Routeur_SSR'
-local modeRelais = 'Routeur_Relais'
-local EtatSSR ='Etat_SSR'
-local EtatRelais='Etat_Relais'
+local adrRouteur = '192.168.1.17' --adr IP du routeur@
+local Energie = 'Routeur_Energie' -- Compteur Energie Consommée
+local idxCptEnergie = 12153 -- laisser à 0 si non utilisé
+local EnergieRoute = 'Routeur_EnergieRoute' -- Compteur Energie Routée
+local idxCptEnergieRoute = 12152 -- laisser à 0 si non utilisé
+local EnergiePv = 'Routeur_Pv' -- Compteur Energie Produite, compteur d'impulsion
+local idxCptPv = 0 -- laisser à 0 si non utilisé
+local EnergieExp = 'Routeur_Export' -- Compteur Energie Exportée
+local idxCptExp = 0 -- laisser à 0 si non utilisé
+local modeSSR = 'Routeur_SSR' -- Selecteur pour commander le SSR via MaxPV
+local modeRelais = 'Routeur_Relais' -- Selecteur pour commander le relais via MaxPV
+local EtatSSR ='Etat_SSR' -- Interupteur d'état du SSR 
+local EtatRelais='Etat_Relais' -- Interupteur d'état du Relais
 -- fin variable à éditer
 --------------------------------
 local index=-1
@@ -73,9 +77,9 @@ function mysplit (inputstr, sep)
    end
    return t
 end
--- Fonction de mise à jour
+-- Fonction de mise à jour Compteur Energie
 function update(device, id, power, energy)
-    -- affiche les Wh négatifs en cas d'injection. Deommenter pour rester à 0wh
+-- affiche les Wh négatifs en cas d'injection. Decommenter pour rester à 0wh
     --if power < 0 then
      --   power=0
     --end
@@ -84,7 +88,7 @@ function update(device, id, power, energy)
     commandArray[index] = {['UpdateDevice'] = id .. "|0|" .. power .. ";" .. energy}
     return
 end
---fonction change etat boutton selecteur SSR Relais
+--fonction change etat Interupteur SSR Relais
 function ChangeState(statessr,staterelais)
     -- mise à jour des etats des selecteurs dans domoticz (pour l'instant en attente)
     --14 : mode de fonctionnement du SSR (0 = STOP, 1 = FORCE, 9 = AUTO)
@@ -116,11 +120,10 @@ if string.sub(tab[20],6,6) == '1' and otherdevices[EtatRelais]=='Off' then
 elseif string.sub(tab[20],6,6) == '0' and otherdevices[EtatRelais]=='On' then
     commandArray[EtatRelais]='Off' 
 end
-
 end
 -- fonction mise à jour Interrupteurs Relais et SSR dans Domoticz
 function updaterouter(statessr,staterelay)
-see_logs('Etat routeur modifé')
+see_logs('Etat routeur modifié')
 if statessr~=nil then
     index=index+1
     commandArray[index] = {['OpenURL'] ='http://'..adrRouteur..'/api/set?ssrmode&value='..statessr}
@@ -130,13 +133,12 @@ if staterelay~=nil then
     commandArray[index] = {['OpenURL'] ='http://'..adrRouteur..'/api/set?relaymode&value='..staterelay}
 end
 end
-
 commandArray = {}
---selecteur selectionnés ?
+--selecteur selectionné ?
 if devicechanged[modeSSR ] or devicechanged[modeRelais] then 
     updaterouter(devicechanged[modeSSR],devicechanged[modeRelais])
 else
-    -- mise à jour toutes les 5 secondes pour éviter une surcharge
+-- mise à jour toutes les 5 secondes pour éviter une surcharge
 time = os.date("*t")
 if time.sec %5 == 0 then 
 Cmd ='curl http://'..adrRouteur..'/api/get?alldata'
@@ -144,8 +146,10 @@ config=assert(io.popen(Cmd))
             ret = config:read('*all')
             config:close();
 tab=mysplit(ret,',')
-update(Energie, idxCptEnergie, tab[3], tab[10])
-update(EnergieRoute, idxCptEnergieRoute, tab[5], tab[9])
+if idxCptEnergie >0 then update(Energie, idxCptEnergie, tab[3], tab[10]) end
+if idxCptEnergieRoute >0 then update(EnergieRoute, idxCptEnergieRoute, tab[5], tab[9]) end
+if idxCptPv >0 then update(EnergiePv, idxCptPv, tab[13], tab[12]) end
+if idxCptExp >0 then update(EnergieExp, idxCptExp, tab[7], tab[11]) end
 ChangeState(tab[20])
 end
 end
