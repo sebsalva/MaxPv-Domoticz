@@ -42,7 +42,7 @@
 --------------------------------
 -- variable à éditer ------
 local debugging = false --true pour voir les logs dans la console log Dz ou false pour ne pas les voir
-local adrRouteur = '192.168.1.17' --adr IP du routeur@
+local adrRouteur = '192.168.1.17' --adr IP du routeur
 local Energie = 'Routeur_Energie' -- Compteur Energie Consommée
 local idxCptEnergie = 12153 -- laisser à 0 si non utilisé
 local EnergieRoute = 'Routeur_EnergieRoute' -- Compteur Energie Routée
