@@ -12,11 +12,11 @@ A Lua script for Domoticz servers allowing to control MaxPv
 Le script peut ensuite être complété de façon identique pour afficher la production, les erreurs, le voltage, etc.
 
 ### Commencez par créer :
-* 2 capteurs virtuels Energie (Electrique (Instantané+Compteur)) et notez leurs noms et Idx
+* au moins 2  capteurs virtuels Energie (Electrique (Instantané+Compteur)) et notez leurs noms et Idx. Il vous faut un Compteur Energie Consommée, un Compteur Energie Routée, et eventuellement un Compteur Energie Produite via le compteur d'impulsion et un Compteur Energie Exportée.
 ![Capteur virtuel Energie](https://raw.githubusercontent.com/sebsalva/MaxPv-Domoticz/main/fig/energie.png)
 
 * 2 Interrupteurs virtuels
-* 2 bouttons selecteurs : important il faut ajouter les levels "stop", "force" et "auto" en miniscule comme sur la copie d'écran
+* 2 bouttons selecteurs pour commander le routeur : important il faut ajouter les levels "stop", "force" et "auto" en miniscule comme sur la copie d'écran
 
 ![Capteur virtuel Energie](https://raw.githubusercontent.com/sebsalva/MaxPv-Domoticz/main/fig/selecteur.png)
 
