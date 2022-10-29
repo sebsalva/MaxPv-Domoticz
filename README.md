@@ -16,7 +16,7 @@ Le script peut ensuite être complété de façon identique pour afficher la pro
 ![Capteur virtuel Energie](https://raw.githubusercontent.com/sebsalva/MaxPv-Domoticz/main/fig/energie.png)
 
 * 2 Interrupteurs virtuels
-* 2 bouttons selecteurs pour commander le routeur : important il faut ajouter les levels "stop", "force" et "auto" en miniscule comme sur la copie d'écran
+* 2 bouttons selecteurs pour commander le routeur (SSR et Relais) : important il faut ajouter les levels "stop", "force", "auto" et "boost" en miniscule et dans cet ordre croissant comme sur la copie d'écran
 
 ![Capteur virtuel Energie](https://raw.githubusercontent.com/sebsalva/MaxPv-Domoticz/main/fig/selecteur.png)
 
