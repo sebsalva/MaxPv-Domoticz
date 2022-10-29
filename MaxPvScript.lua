@@ -39,6 +39,9 @@
 --24 : référence du jour pour l’index journalier d’énergie importée (kWh)
 --25 : référence du jour pour l’index journalier d’énergie exportée (kWh)
 --26 : référence du jour pour l’index journalier d’énergie produite (kWh)
+--/api/action?xxxx 
+--booston : mise en marche du mode BOOST
+--boostoff : arrêt du mode BOOST
 --------------------------------
 -- variable à éditer ------
 local debugging = false --true pour voir les logs dans la console log Dz ou false pour ne pas les voir
@@ -115,11 +118,11 @@ function ChangeState(statessr,staterelais,ch)
         };
 local sEtatSSR =otherdevices[modeSSR];
 local sEtatRelais =otherdevices[modeRelais];
-if statessr~=modes[sEtatSSR] and timediff(modeSSR) >=delay then
+if statessr~=modes[sEtatSSR] and timediff(modeSSR) >10 then
     commandArray[modeSSR]='Set Level '..modes[statessr];
     see_logs('SSR changing state: '..statessr);
 end
-if staterelais~=modes[sEtatRelais] and timediff(modeRelais) >=delay then
+if staterelais~=modes[sEtatRelais] and timediff(modeRelais) >10 then
     commandArray[modeRelais]='Set Level '..modes[staterelais];
     see_logs('Relais changing state old new: '..modes[sEtatRelais] .. staterelais);
 end
@@ -139,7 +142,11 @@ function updaterouter(statessr,staterelay)
 see_logs('Etat routeur modifié')
 if statessr~=nil then
     index=index+1
+    if statessr == 'boost' then
+     commandArray[index] = {['OpenURL'] ='http://'..adrRouteur..'/api/action?booston'}
+    else 
     commandArray[index] = {['OpenURL'] ='http://'..adrRouteur..'/api/set?ssrmode&value='..statessr}
+    end
 end
 if staterelay~=nil then
     index=index+1
