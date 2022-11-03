@@ -118,11 +118,11 @@ function ChangeState(statessr,staterelais,ch)
         };
 local sEtatSSR =otherdevices[modeSSR];
 local sEtatRelais =otherdevices[modeRelais];
-if statessr~=modes[sEtatSSR] and timediff(modeSSR) >10 then
+if statessr~=modes[sEtatSSR] and timediff(modeSSR) >6*delay then
     commandArray[modeSSR]='Set Level '..modes[statessr];
     see_logs('SSR changing state: '..statessr);
 end
-if staterelais~=modes[sEtatRelais] and timediff(modeRelais) >10 then
+if staterelais~=modes[sEtatRelais] and timediff(modeRelais) >6*delay then
     commandArray[modeRelais]='Set Level '..modes[staterelais];
     see_logs('Relais changing state old new: '..modes[sEtatRelais] .. staterelais);
 end
