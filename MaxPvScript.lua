@@ -1,4 +1,4 @@
--- Doc API MaxPV https://github.com/Jetblack31/MaxPV version 3.1
+-- Doc API MaxPV https://github.com/Jetblack31/MaxPV version 3.32
 --API /api/get?data=XX lecture data de fonctionnement
 --XX
 --01 : tension secteur
@@ -46,14 +46,14 @@
 -- variable à éditer ------
 local debugging = false --true pour voir les logs dans la console log Dz ou false pour ne pas les voir
 local adrRouteur = '192.168.1.17' --adr IP du routeur@
-local Energie = 'Routeur_Energie' -- Compteur Energie Consommée
+local Energie = 'maison' -- Compteur Energie Consommée
 local idxCptEnergie = 12153 -- laisser à 0 si non utilisé
 local EnergieRoute = 'Routeur_EnergieRoute' -- Compteur Energie Routée
 local idxCptEnergieRoute = 12152 -- laisser à 0 si non utilisé
 local EnergiePv = 'Routeur_Pv' -- Compteur Energie Produite, compteur d'impulsion
 local idxCptPv = 0 -- laisser à 0 si non utilisé
 local EnergieExp = 'Routeur_Export' -- Compteur Energie Exportée
-local idxCptExp = 12200 -- laisser à 0 si non utilisé
+local idxCptExp = 0 -- laisser à 0 si non utilisé
 local modeSSR = 'Routeur_SSR' -- Selecteur pour commander le SSR via MaxPV
 local modeRelais = 'Routeur_Relais' -- Selecteur pour commander le relais via MaxPV
 local EtatSSR ='Etat_SSR' -- Interupteur d'état du SSR 
@@ -118,11 +118,11 @@ function ChangeState(statessr,staterelais,ch)
         };
 local sEtatSSR =otherdevices[modeSSR];
 local sEtatRelais =otherdevices[modeRelais];
-if statessr~=modes[sEtatSSR] and timediff(modeSSR) >6*delay then
+if statessr~=modes[sEtatSSR] and timediff(modeSSR) >5*delay then
     commandArray[modeSSR]='Set Level '..modes[statessr];
     see_logs('SSR changing state: '..statessr);
 end
-if staterelais~=modes[sEtatRelais] and timediff(modeRelais) >6*delay then
+if staterelais~=modes[sEtatRelais] and timediff(modeRelais) >5*delay then
     commandArray[modeRelais]='Set Level '..modes[staterelais];
     see_logs('Relais changing state old new: '..modes[sEtatRelais] .. staterelais);
 end
@@ -165,7 +165,11 @@ Cmd ='curl http://'..adrRouteur..'/api/get?alldata'
 config=assert(io.popen(Cmd))
             ret = config:read('*all')
             config:close();
+see_logs(ret)
 tab=mysplit(ret,',')
+if tab[20] == nil then 
+    return
+    end
 if idxCptEnergie >0 then update(Energie, idxCptEnergie, tab[3], tab[10]) end
 if idxCptEnergieRoute >0 then update(EnergieRoute, idxCptEnergieRoute, tab[5], tab[9]) end
 if idxCptPv >0 then update(EnergiePv, idxCptPv, tab[13], tab[12]) end
